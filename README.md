@@ -8,8 +8,9 @@ Update GUI software from the Fall 2017 to Spring 2018 Aries project. The softwar
 
 # Credit:
 
-Demetrios Doumas     
-Arik
-Matthews Cardenas
+Demetrios Doumas
+
+Arikuzzaman Idrisy
+
 Adam Mckoy 
 
