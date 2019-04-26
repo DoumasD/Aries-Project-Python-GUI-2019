@@ -21,23 +21,27 @@ t1.daemon = True
 t1.start()
 
 global x
-
+    
 class Com_open:
   def __init__(self, serialport, baud):
     self.baud=baud
-    print baud
-    
     self.serialport=serialport
-    print serialport
+    print self.serialport
+    print self.baud
     try:
       self.serial_object=serial.Serial('COM' + str(serialport),baud,timeout=None)
         
     except ValueError:
+      print "baud"
+      print "serialport"
       print("Enter Baud and Port")
         
     
 class design:
+
+
   def __init__(self):
+
     self.w=QtGui.QWidget()
     self.w.setFixedSize(1600, 800)
     self.w.move(300, 300)
@@ -162,10 +166,17 @@ class design:
     self.port_entry = QtGui.QLineEdit(self.w)
     self.port_entry.move(1180, 540)
 
+    #print self.port_entry.text()
+    #print self.baud_rate.text()
     self.port = str(self.port_entry.text())
   
     self.baud = str(self.baud_rate.text())
   
+    #self.com_info=[]
+
+    #self.com_info.append(self.port)
+    #self.com_info.append(self.baud)
+    #print self.com_info
 
     # Buttons
     self.CONNECT = QtGui.QPushButton("CONNECT", self.w)
@@ -189,30 +200,88 @@ class design:
     self.button8 = QtGui.QPushButton('Abort', self.w)
     self.button8.move(1180, 720)  
 
+
+    QtCore.QObject.connect(self.CONNECT, QtCore.SIGNAL("clicked()"),self.my_connect)
+    QtCore.QObject.connect(self.DISCONNECT, QtCore.SIGNAL("clicked()"), self.Disconnect)
+    QtCore.QObject.connect(self.button1, QtCore.SIGNAL("clicked()"),self.open_Pressurant_fill)
+    QtCore.QObject.connect(self.button2, QtCore.SIGNAL("clicked()"),self.close_Pressurant_fill)
+    QtCore.QObject.connect(self.button3, QtCore.SIGNAL("clicked()"),self.open_POIV)
+    QtCore.QObject.connect(self.button4, QtCore.SIGNAL("clicked()"),self.close_POIV)
+    QtCore.QObject.connect(self.button5, QtCore.SIGNAL("clicked()"),self.open_Oxidizer_fill)
+    QtCore.QObject.connect(self.button6, QtCore.SIGNAL("clicked()"),self.close_Oxidizer_fill)  
+    QtCore.QObject.connect(self.button7, QtCore.SIGNAL("clicked()"), self.launch)
+    QtCore.QObject.connect(self.button8, QtCore.SIGNAL("clicked()"), self.Abort) 
+
+
+        # Functionsserial_objectserial_objectseserial_object
+  @pyqtSlot()
+  def my_connect(self):
+    self.port = str(self.port_entry.text())
+    self.baud = str(self.baud_rate.text())
+    Com_open(self.port, self.baud)
+
+  # Sending numerical commands to actuate the engine
+  @pyqtSlot()
+  def open_Pressurant_fill(self):
+    Com_open(self.port, self.baud).serial_object.write(b'1')
+    
+  @pyqtSlot()
+  def close_Pressurant_fill(self):
+    Com_open(self.port, self.baud).serial_object.write(b'2')
     
 
-    QtCore.QObject.connect(self.CONNECT, QtCore.SIGNAL("clicked()"),my_connect)
-    QtCore.QObject.connect(self.DISCONNECT, QtCore.SIGNAL("clicked()"), Disconnect)
-    QtCore.QObject.connect(self.button1, QtCore.SIGNAL("clicked()"),open_Pressurant_fill)
-    QtCore.QObject.connect(self.button2, QtCore.SIGNAL("clicked()"),close_Pressurant_fill)
-    QtCore.QObject.connect(self.button3, QtCore.SIGNAL("clicked()"),open_POIV)
-    QtCore.QObject.connect(self.button4, QtCore.SIGNAL("clicked()"),close_POIV)
-    QtCore.QObject.connect(self.button5, QtCore.SIGNAL("clicked()"),open_Oxidizer_fill)
-    QtCore.QObject.connect(self.button6, QtCore.SIGNAL("clicked()"),close_Oxidizer_fill)  
-    QtCore.QObject.connect(self.button7, QtCore.SIGNAL("clicked()"), launch)
-    QtCore.QObject.connect(self.button8, QtCore.SIGNAL("clicked()"), Abort) 
+  @pyqtSlot()
+  def open_POIV(self):
+    Com_open(self.port, self.baud).serial_object.write(b'3')
     
 
-   
+  @pyqtSlot()
+  def close_POIV(self):
+    Com_open(self.port, self.baud).serial_object.write(b'4')
+      
 
-# Functions
-@pyqtSlot()
-def my_connect():
-  Com_open(x.port,x.baud)
+  @pyqtSlot() 
+  def open_Oxidizer_fill(self):
+    Com_open(self.port, self.baud).serial_object.write(b'5')
+    
+
+  @pyqtSlot()
+  def close_Oxidizer_fill(self):
+    Com_open(self.port, self.baud).serial_object.write(b'6')
+      
+
+  @pyqtSlot()
+  def launch(self):
+    Com_open(self.port, self.baud).serial_object.write(b'7')
+
+  @pyqtSlot()
+  def Abort(self):
+    Com_open(self.port, self.baud).serial_object.write(b'8')
+
+
+
+  @pyqtSlot()
+  def Disconnect(self):
+    try:
+        Com_open(self.port, self.baud).serial_object.close()  # Close serial port connection
+        
+    except AttributeError:
+        print("Closed without opening it")
+
+
+
+
   
 
+
+    
+
+    
+    
+
+
   
-# get data Needs to be modified
+'''
 #@pyqtSlot()
 def get_data():
   """  Update all the labels based on telemetry string
@@ -357,99 +426,8 @@ def get_data():
     except:
         pass
 
+'''
 
-# Sending numerical commands to actuate the engine
-@pyqtSlot()
-def open_Pressurant_fill():
-  print "H2"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'1')
-  
-@pyqtSlot()
-def close_Pressurant_fill():
-  print "H3"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'2')
-  #serial_object.write(b'2')
-
-@pyqtSlot()
-def open_POIV():
-  print "H4"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'3')
-  #serial_object.write(b'3')
-
-@pyqtSlot()
-def close_POIV():
-  print "H5"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'4')
-    #serial_object.write(b'4')
-
-@pyqtSlot() 
-def open_Oxidizer_fill():
-  print "H6"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'5')
-    #serial_object.write(b'5')
-
-@pyqtSlot()
-def close_Oxidizer_fill():
-  print "H7"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'6')
-    #serial_object.write(b'6')
-
-@pyqtSlot()
-def launch():
-  print "H8"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'7')
-    #serial_object.write(b'7')
-
-@pyqtSlot()
-def Abort():
-  print "H9"
-  port=port_entry.text()
-  p1=str(port)
-  baud=str(baud_rate.text())
-  print baud
-  Com_open(p1, baud).serial_object.write(b'8')
-    #serial_object.write(b'8')
-
-
-@pyqtSlot()
-def Disconnect():
-  try:
-      port=design.port_entry.text()
-      p1=str(port)
-      baud=str(design.baud_rate.text())
-      print baud
-      Com_open(p1, baud).serial_object.close()  # Close serial port connection
-      
-  except AttributeError:
-      print("Closed without opening it")
 
 
 def main():
