@@ -1,0 +1,53 @@
+Pseudo Code:
+
+
+First Thread : Creates an excel file with header name for each column.
+
+//////////////////////////////////////////////////////
+Second Thread : starts when Connect button is pressed
+
+while(1):
+	
+	   Reading serial data
+	   Critical Section:
+           Mux_Lock_One
+	   Filter data queue put (serial data) - thread safe in python
+           Mux_unLock_One
+
+/////////////////////////////////////////////////////
+
+
+Inside GUI Thread (Parent Thread)
+  
+  inital display
+
+
+  ////////////////////////////////////////////////////////////////////////
+  Third Thread : Update text labels with serial data
+  Critical Section:
+  Mux_Lock_One
+  Read from the filter data queue
+  Mux_unLock_One
+  update text.
+ 
+  store the data in a second queue for the fourth thread to use
+  second Mux_Lock_Two
+  Critical Section:
+  Mux_Lock_Two
+  Save_data_to_excel queue put (filter data)
+  Mux_unLock_Two
+  ////////////////////////////////////////////////////////////////////////
+
+
+  Fourth Thread :
+  while(1):
+  	Get data from Save_data_to_excel queue
+        Critical Section:
+  	Mux_Lock_Two
+  	read from Save_data_to_excel queue 
+  	Mux_unLock_Two
+        Write to excel file.
+
+
+
+
