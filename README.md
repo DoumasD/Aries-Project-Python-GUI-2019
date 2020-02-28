@@ -1,29 +1,23 @@
-# Project Name: Project Aries 2019   4/17/19
-The project is currently being worked on.
+# Project Name: Project Aries 2019   2/28/20
 
 # Description:
 
-Update GUI software from the Fall 2017 to Spring 2018 Aries project. The software will communicate with a hybrid rocket engine. It has to display data on the GUI and allow the user to send commands as well. This project is moving towards pyQt instead of tkinter framework.
+Update GUI software from the Fall 2017 to Spring 2018 Aries project. The software will communicate with a hybrid rocket engine prototype. It has to display data on the GUI and allow the user to send commands as well. This project is moving towards pyQt instead of tkinter framework.
 
-Progress:
-1.) GUI display
-2.) Serial connection
-3.) Threading implementation with mutex locks, please see Thread Execution Order file.
-4.) Able to see telemetry data and send commands to the microcontroller of the engine.
+# Instructions
+1.) Download "GroundStationSoftware_2020.py" file
+2.) Open Anaconda prompt.
+3.) Go to the directory where the file is saved.
+4.) Run it by using the command, python GroundStationSoftware_2020.py
 
-
-Needs to be done:
-1.) Plot Data functionality
-
-
-
+# Usage 
+1.) Open the GUI software on your laptop.
+2.) Type the baud rate and serial port number where your xBee radio module is connected to your USB serial port.
+3.) Click connect to open the serial port connection between your GUI and the engine.
+4.) Press the appropriate button to fill the tanks of the engine.
 
 # Credit:
 
 Demetrios Doumas
-
-Arikuzzaman Idrisy
-
-Adam Mckoy 
 
 

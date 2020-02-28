@@ -23,14 +23,19 @@ Inside GUI Thread (Parent Thread)
 
 
   ////////////////////////////////////////////////////////////////////////
-  Third Thread : Update text labels with serial data
+  //// Update text labels, and plots with serial data
+
+  Call a timed function called update every second.
   Critical Section:
   Mux_Lock_One
   Read from the filter data queue
   Mux_unLock_One
-  update text.
+  
  
-  store the data in a second queue for the fourth thread to use
+  update text.
+  update plots.
+ 
+  store the data in a second queue for the third thread to use
   second Mux_Lock_Two
   Critical Section:
   Mux_Lock_Two
@@ -39,7 +44,7 @@ Inside GUI Thread (Parent Thread)
   ////////////////////////////////////////////////////////////////////////
 
 
-  Fourth Thread :
+  Third Thread :
   while(1):
   	Get data from Save_data_to_excel queue
         Critical Section:
