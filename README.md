@@ -1,4 +1,4 @@
-# Project Name: Project Aries 2019   2/28/20
+# Project Name: Project Aries 2019
 
 # Description:
 
